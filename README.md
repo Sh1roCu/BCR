@@ -3,7 +3,7 @@
 ***
 * 注意：<br>
       1.使用的Mirai-Console版本为`2.10.1`，其他版本请自行尝试。<br>
-      2.使用[MCL](https://github.com/iTXTech/mirai-console-loader)启动Mirai-Console
+      2.使用[MCL](https://github.com/iTXTech/mirai-console-loader)启动Mirai-Console<br>
       3.使用了[Google-Gson](https://github.com/google/gson) 2.8.6和[Apache-HttpClient](https://github.com/apache/httpcomponents-client) 5.5.2-alpha1第三方库<br>
       4.BCR相关api均使用[bigfun](https://www.bigfun.cn)
 ***

@@ -6,7 +6,7 @@
       1.使用的Mirai-Console版本为`2.10.1`，其他版本请自行尝试。<br>
       2.使用[MCL](https://github.com/iTXTech/mirai-console-loader)启动Mirai-Console<br>
       3.使用了[Google-Gson](https://github.com/google/gson) 2.8.6和[Apache-HttpClient](https://github.com/apache/httpcomponents-client) 5.5.2-alpha1第三方库<br>
-      4.公主连结相关api均使用[bigfun](https://www.bigfun.cn)
+      4.公主连结相关api使用[bigfun](https://www.bigfun.cn)和[calendar-updater-action](https://github.com/pcrbot/calendar-updater-action)
 ***
 * 使用：<br>
   * 输入命令执行的功能：<br>

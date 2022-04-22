@@ -60,11 +60,7 @@ public final class BCRMain extends JavaPlugin {
         getLogger().info("插件加载完成...");
         GlobalEventChannel.INSTANCE.subscribeAlways(GroupMessageEvent.class, new MyGroupMessageEvent());
         GlobalEventChannel.INSTANCE.subscribeAlways(UserMessageEvent.class, new MyUserMessageEvent());
-        GlobalEventChannel.INSTANCE.subscribeAlways(BotInvitedJoinGroupRequestEvent.class, event -> {
-            event.accept();
-            getLogger().info("已自动同意入群邀请");
-        });
-    }
+     }
 
     /**
      * Create UPer face cache file.

@@ -1,5 +1,6 @@
 # BCR
-用于公主连结和BILIBILI部分功能的Mirai-Console插件
+用于公主连结和BILIBILI部分功能的Mirai-Console插件<br>
+~我超，写完才看见已经有过了~
 ***
 * 注意：<br>
       1.使用的Mirai-Console版本为`2.10.1`，其他版本请自行尝试。<br>

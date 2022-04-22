@@ -3,10 +3,11 @@
 ~我超，写完才看见已经有过监听了~
 ***
 * 注意：<br>
-      1.使用的Mirai-Console版本为`2.10.1`，其他版本请自行尝试。<br>
-      2.使用[MCL](https://github.com/iTXTech/mirai-console-loader)启动Mirai-Console<br>
-      3.使用了[Google-Gson](https://github.com/google/gson) 2.8.6和[Apache-HttpClient](https://github.com/apache/httpcomponents-client) 5.5.2-alpha1第三方库<br>
-      4.公主连结相关api使用[bigfun](https://www.bigfun.cn)和[calendar-updater-action](https://github.com/pcrbot/calendar-updater-action)
+      1.纯java编写，占比极少的kt是mirai官方提供的测试运行类RunTerminal.kt
+      2.使用的Mirai-Console版本为`2.10.1`，其他版本请自行尝试。<br>
+      3.使用[MCL](https://github.com/iTXTech/mirai-console-loader)启动Mirai-Console<br>
+      4.使用了[Google-Gson](https://github.com/google/gson) 2.8.6和[Apache-HttpClient](https://github.com/apache/httpcomponents-client) 5.5.2-alpha1第三方库<br>
+      5.公主连结相关api使用[bigfun](https://www.bigfun.cn)和[calendar-updater-action](https://github.com/pcrbot/calendar-updater-action)
 ***
 * 使用：<br>
   * 输入命令执行的功能：<br>

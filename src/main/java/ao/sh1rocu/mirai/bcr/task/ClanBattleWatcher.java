@@ -17,20 +17,98 @@
 
 package ao.sh1rocu.mirai.bcr.task;
 
+import ao.sh1rocu.mirai.bcr.util.ClanBattleInfoSearch;
+import com.google.gson.JsonObject;
+import net.mamoe.mirai.Bot;
+import net.mamoe.mirai.contact.Group;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimerTask;
 
 /**
  * 监听公会战
+ *
  * @author Sh1roCu
  */
 public class ClanBattleWatcher extends TimerTask {
     /**
      * 暂存boss信息的时间戳
      */
-    static long clan_battle_timestamp = 0;
+    static long damage_time_stamp = 0;
+    /**
+     * 暂存每个群对应的最新的boss信息的时间戳
+     */
+    static Map<Long, Long> clan_battle_timestamp = new HashMap<>();
+    /**
+     * The Api.
+     */
+    static final Map<String, String> API = ClanBattleInfoSearch.CLAN_BATTLE_API;
 
     @Override
     public void run() {
-        /*TODO:自动报刀 bigfun接口*/
+        if (!Bot.getInstances().isEmpty()) {
+            for (Bot bot : Bot.getInstances()) {
+                if (!bot.getGroups().isEmpty()) {
+                    for (Group group : bot.getGroups()) {
+                        if (getJson(API.get("clan_day_report"), group) != null) {
+                            if (getJson(API.get("clan_day_report"), group).get("data").isJsonObject()) {
+                                JsonObject info = getJson(API.get("clan_day_report"), group).get("data").getAsJsonObject();
+                                /*获取最新一位成员的出刀信息*/
+                                JsonObject damageInfo = getJson(API.get("clan_day_timeline_report"), group).get("data").getAsJsonObject()
+                                        .get("list").getAsJsonArray().get(0).getAsJsonObject();
+                                long newTimeStamp = info.get("server_time").getAsLong();
+                                long newDamageTimeStamp = damageInfo.get("datetime").getAsLong();
+                                if (damage_time_stamp == 0) {
+                                    damage_time_stamp = newDamageTimeStamp;
+                                } else if (damage_time_stamp < newDamageTimeStamp) {
+                                    /*检测到有成员出刀*/
+                                    String damageMessage = damageInfo.get("name").getAsString() +
+                                            "对[" +
+                                            damageInfo.get("lap_num").getAsInt() +
+                                            "周目]" +
+                                            damageInfo.get("boss_name").getAsString() +
+                                            "造成了" +
+                                            damageInfo.get("damage").getAsLong() +
+                                            "点伤害，获得了" +
+                                            damageInfo.get("score").getAsLong() +
+                                            "点分数";
+                                    if (damageInfo.get("reimburse").getAsInt() == 1) {
+                                        damageMessage += "[补偿刀]";
+                                    }
+                                    if (damageInfo.get("kill").getAsInt() == 1) {
+                                        damageMessage += "并击破";
+                                    }
+                                    group.sendMessage(damageMessage);
+                                    /*更新时间戳*/
+                                    damage_time_stamp = newDamageTimeStamp;
+                                }
+                                if (!clan_battle_timestamp.containsKey(group.getId())) {
+                                    clan_battle_timestamp.put(group.getId(), newTimeStamp);
+                                } else if (clan_battle_timestamp.get(group.getId()) < newTimeStamp) {
+                                    /*检测到boss状态改变，发送boss新状态*/
+                                    String bossStatus = ClanBattleInfoSearch.getBossStatus(group);
+                                    group.sendMessage(bossStatus);
+                                    /*更新时间戳*/
+                                    clan_battle_timestamp.put(group.getId(), newTimeStamp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+    }
+
+    /**
+     * 获得解析后的json
+     *
+     * @param api   API
+     * @param group 群组
+     * @return 返回JsonObject
+     */
+    private static JsonObject getJson(String api, Group group) {
+        return ClanBattleInfoSearch.parseJson(ClanBattleInfoSearch.getJsonResource(api, group));
     }
 }

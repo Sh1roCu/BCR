@@ -45,10 +45,11 @@ public class ClanBattleInfoSearch {
     /**
      * The Clan battle api.
      */
-    static final Map<String, String> CLAN_BATTLE_API = new HashMap<String, String>() {
+    public static Map<String, String> CLAN_BATTLE_API = new HashMap<String, String>() {
         {
             put("clan_report", "https://www.bigfun.cn/api/feweb?target=gzlj-clan-collect-report/a");
             put("clan_day_report", "https://www.bigfun.cn/api/feweb?target=gzlj-clan-day-report-collect/a");
+            put("clan_day_timeline_report", "https://www.bigfun.cn/api/feweb?target=gzlj-clan-day-timeline-report/a");
         }
     };
 
@@ -59,6 +60,7 @@ public class ClanBattleInfoSearch {
 
     /**
      * 读取config中的cookie
+     *
      * @param group 群组
      * @return 返回cookie
      */
@@ -84,11 +86,12 @@ public class ClanBattleInfoSearch {
 
     /**
      * 获取json
-     * @param api API链接
+     *
+     * @param api   API链接
      * @param group 群组
      * @return 返回JsonString
      */
-    private static String  getJsonResource(String api, Group group) {
+    public static String getJsonResource(String api, Group group) {
         try {
             CloseableHttpClient httpClient = HttpClients.createDefault();
             HttpGet httpGet = new HttpGet(api);
@@ -116,15 +119,15 @@ public class ClanBattleInfoSearch {
 
     /**
      * 解析json
+     *
      * @param resource JsonString
      * @return 返回解析后的Json对象
      */
-    private static JsonObject parseJson(String resource) {
+    public static JsonObject parseJson(String resource) {
         try {
             JsonElement jsonElement = JsonParser.parseString(resource);
             return jsonElement.getAsJsonObject();
         } catch (Exception e) {
-            BCRMain.INSTANCE.getLogger().error("json解析失败");
             return null;
         }
     }
@@ -137,7 +140,7 @@ public class ClanBattleInfoSearch {
      */
 
     public static String getLastRankingInfo(Group group) {
-        String resource =  getJsonResource(CLAN_BATTLE_API.get("clan_report"), group);
+        String resource = getJsonResource(CLAN_BATTLE_API.get("clan_report"), group);
         if ("error".equals(resource)) {
             return "查询失败，请联系bot管理员填写配置文件的cookie";
         }
@@ -172,7 +175,7 @@ public class ClanBattleInfoSearch {
      */
 
     public static String getLastAttackInfo(Group group) {
-        String resource =  getJsonResource(CLAN_BATTLE_API.get("clan_report"), group);
+        String resource = getJsonResource(CLAN_BATTLE_API.get("clan_report"), group);
         if ("error".equals(resource)) {
             return "查询失败，请联系bot管理员填写配置文件的cookie";
         }
@@ -217,7 +220,7 @@ public class ClanBattleInfoSearch {
      */
 
     public static String getClanAllRanking(Group group) {
-        String resource =  getJsonResource(CLAN_BATTLE_API.get("clan_report"), group);
+        String resource = getJsonResource(CLAN_BATTLE_API.get("clan_report"), group);
         if ("error".equals(resource)) {
             return "查询失败，请联系bot管理员填写配置文件的cookie";
         }
@@ -273,7 +276,7 @@ public class ClanBattleInfoSearch {
      */
 
     public static String getBossStatus(Group group) {
-        String resource =  getJsonResource(CLAN_BATTLE_API.get("clan_day_report"), group);
+        String resource = getJsonResource(CLAN_BATTLE_API.get("clan_day_report"), group);
         if ("error".equals(resource)) {
             return "查询失败，请联系bot管理员填写配置文件的cookie";
         }
@@ -286,7 +289,7 @@ public class ClanBattleInfoSearch {
                 return "查询失败，该群设置的bigfun账号没有加入行会，请联系bot管理员更换cookie";
             }
             if (!data.get("data").isJsonObject()) {
-                return "查询失败，该群设置的bigfun账号所在公会未进行过公会战";
+                return "查询失败，会战还未开始";
             }
             StringBuilder stringBuilder = new StringBuilder();
             JsonObject info = data.get("data").getAsJsonObject();

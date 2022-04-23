@@ -38,7 +38,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -66,9 +65,8 @@ public class DynamicWatcher extends TimerTask {
             BCRMain.INSTANCE.getLogger().error("DynamicWatcher.json配置文件格式错误，请修改");
             return;
         }
-        List<Bot> bots = Bot.getInstances();
-        if (bots.size() != 0) {
-            for (Bot bot : bots) {
+        if (!Bot.getInstances().isEmpty()) {
+            for (Bot bot : Bot.getInstances()) {
                 /*遍历uid*/
                 for (String uid : dataJson.keySet()) {
                     try {
@@ -88,10 +86,9 @@ public class DynamicWatcher extends TimerTask {
                             } else if (dynamic_timestamp.get(uid) < newDynamicTimestamp) {
                                 /*更新时间戳*/
                                 dynamic_timestamp.put(uid, newDynamicTimestamp);
-                                ContactList<Group> groups = bot.getGroups();
-                                if (groups.size() != 0) {
+                                if (!bot.getGroups().isEmpty()) {
                                     /*遍历群组*/
-                                    for (Group group : groups) {
+                                    for (Group group : bot.getGroups()) {
                                         if (dataJson.get(uid).getAsJsonObject().has(String.valueOf(group.getId()))) {
                                             String permission = dataJson.get(uid).getAsJsonObject().get(String.valueOf(group.getId())).getAsString();
                                             if ("on".equals(permission)) {
@@ -256,6 +253,7 @@ public class DynamicWatcher extends TimerTask {
 
     /**
      * 读取Config内容
+     *
      * @return 返回json对象
      */
 

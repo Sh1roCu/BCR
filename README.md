@@ -1,6 +1,6 @@
 # BCR
 用于公主连结和BILIBILI部分功能的Mirai-Console插件<br>
-~我超，写完才看见已经有过监听了~
+~我超，写完才看见已经有动态监听了~
 ***
 * 注意：<br>
       &emsp;1.纯java编写，占比极少的kt是mirai官方提供的测试运行类RunTerminal.kt<br>
@@ -25,7 +25,8 @@
            ...<br>
   * 不需要输入命令执行的功能：<br>
         bilibili：`监听任意UP主的动态并发送到指定群里`<br>
-        &emsp;&emsp;&emsp;&emsp;具体配置看[Config](https://github.com/Sh1roCu/BCR#Config)：<br>
+        BCR：`自动检测boss状态，出刀后自动报刀`<br>
+        &emsp;&emsp;&emsp;具体配置看Config<br>
 ***
 * Config：<br>
         &emsp;1.在`(mcl所在目录)\data\ao.sh1rocu.mirai.bcr\UPerFaceCache`中保存了查询过的UP主的头像<br>
@@ -51,7 +52,7 @@
         &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;`}`<br>
 ***
 * TODO(~大概也许可能应该~)：<br>
-- [ ] 1.自动报刀(bigfun的api在网页端延迟很久，~应该没什么用了~)<br>
+- [x] 1.自动报刀(bigfun的api在网页端延迟很久，~应该没什么用了~)<br>
 - [ ] 2.指令发送噼哩噼哩视频链接提取封面(有网页端提取，~应该也没什么用~)<br>
         ...<br>
         ...<br>

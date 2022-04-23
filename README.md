@@ -25,7 +25,8 @@
            ...<br>
   * 不需要输入命令执行的功能：<br>
         bilibili：`监听任意UP主的动态并发送到指定群里`<br>
-        &emsp;&emsp;&emsp;&emsp;具体配置看[Config](https://github.com/Sh1roCu/BCR#Config)：<br>
+        BCR：`自动检测boss状态，出刀时自动报刀`<br>
+        &emsp;&emsp;&emsp;&emsp;具体配置看Config<br>
 ***
 * Config：<br>
         &emsp;1.在`(mcl所在目录)\data\ao.sh1rocu.mirai.bcr\UPerFaceCache`中保存了查询过的UP主的头像<br>

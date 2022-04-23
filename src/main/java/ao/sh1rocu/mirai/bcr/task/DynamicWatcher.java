@@ -21,7 +21,6 @@ import ao.sh1rocu.mirai.bcr.BCRMain;
 import com.google.gson.*;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Contact;
-import net.mamoe.mirai.contact.ContactList;
 import net.mamoe.mirai.contact.Group;
 import net.mamoe.mirai.message.data.Image;
 import net.mamoe.mirai.message.data.MessageChain;

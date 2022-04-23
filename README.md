@@ -1,6 +1,6 @@
 # BCR
 用于公主连结和BILIBILI部分功能的Mirai-Console插件<br>
-~我超，写完才看见已经有过监听了~
+~我超，写完才看见已经有动态监听了~
 ***
 * 注意：<br>
       &emsp;1.纯java编写，占比极少的kt是mirai官方提供的测试运行类RunTerminal.kt<br>

@@ -22,7 +22,6 @@ import com.google.gson.JsonObject;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -33,16 +32,10 @@ import java.util.TimerTask;
  */
 public class ClanBattleWatcher extends TimerTask {
     /**
-     * 暂存boss信息的时间戳
+     * 暂存出刀信息的时间戳
      */
     static long damage_time_stamp = 0;
-    /**
-     * 暂存每个群对应的最新的boss信息的时间戳
-     */
-    static Map<Long, Long> clan_battle_timestamp = new HashMap<>();
-    /**
-     * The Api.
-     */
+
     static final Map<String, String> API = ClanBattleInfoSearch.CLAN_BATTLE_API;
 
     @Override
@@ -57,7 +50,6 @@ public class ClanBattleWatcher extends TimerTask {
                                 /*获取最新一位成员的出刀信息*/
                                 JsonObject damageInfo = getJson(API.get("clan_day_timeline_report"), group).get("data").getAsJsonObject()
                                         .get("list").getAsJsonArray().get(0).getAsJsonObject();
-                                long newTimeStamp = info.get("server_time").getAsLong();
                                 long newDamageTimeStamp = damageInfo.get("datetime").getAsLong();
                                 if (damage_time_stamp == 0) {
                                     damage_time_stamp = newDamageTimeStamp;
@@ -80,17 +72,10 @@ public class ClanBattleWatcher extends TimerTask {
                                         damageMessage += "并击破";
                                     }
                                     group.sendMessage(damageMessage);
-                                    /*更新时间戳*/
-                                    damage_time_stamp = newDamageTimeStamp;
-                                }
-                                if (!clan_battle_timestamp.containsKey(group.getId())) {
-                                    clan_battle_timestamp.put(group.getId(), newTimeStamp);
-                                } else if (clan_battle_timestamp.get(group.getId()) < newTimeStamp) {
-                                    /*检测到boss状态改变，发送boss新状态*/
                                     String bossStatus = ClanBattleInfoSearch.getBossStatus(group);
                                     group.sendMessage(bossStatus);
                                     /*更新时间戳*/
-                                    clan_battle_timestamp.put(group.getId(), newTimeStamp);
+                                    damage_time_stamp = newDamageTimeStamp;
                                 }
                             }
                         }

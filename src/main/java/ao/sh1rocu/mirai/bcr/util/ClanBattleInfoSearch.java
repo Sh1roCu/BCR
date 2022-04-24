@@ -105,6 +105,7 @@ public class ClanBattleInfoSearch {
             CloseableHttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String resource = EntityUtils.toString(entity);
+            entity.close();
             response.close();
             httpClient.close();
             return resource;
@@ -293,7 +294,7 @@ public class ClanBattleInfoSearch {
             }
             StringBuilder stringBuilder = new StringBuilder();
             JsonObject info = data.get("data").getAsJsonObject();
-            JsonObject bossInfo = info.get("bossInfo").getAsJsonObject();
+            JsonObject bossInfo = info.get("boss_info").getAsJsonObject();
             return stringBuilder.append("当前BOSS状态-->\n")
                     .append("第").append(bossInfo.get("lap_num").getAsInt()).append("周目-")
                     .append(bossInfo.get("name").getAsString()).append("[").append(bossInfo.get("current_life").getAsString())

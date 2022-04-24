@@ -68,7 +68,8 @@ public class SearchUPer {
             CloseableHttpClient httpClient = HttpClients.custom()
                     .setDefaultHeaders(headers)
                     .build();
-            HttpGet httpGet = new HttpGet("https://api.bilibili.com/x/relation/stat?vmid=" + uid);  //返回关注和粉丝数
+            /*返回关注和粉丝数*/
+            HttpGet httpGet = new HttpGet("https://api.bilibili.com/x/relation/stat?vmid=" + uid);
             CloseableHttpResponse response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String resource = EntityUtils.toString(entity);
@@ -138,11 +139,12 @@ public class SearchUPer {
 
     /**
      * 获取头像
-     * @param faceUrl 头像的url
+     *
+     * @param faceUrl      头像的url
      * @param faceResponse api返回的响应
-     * @param uid UP主的UID
-     * @param sender 群组或用户（好友，群成员
-     *               @return 返回头像
+     * @param uid          UP主的UID
+     * @param sender       群组或用户（好友，群成员
+     * @return 返回头像
      */
     private static Image getFace(String faceUrl, CloseableHttpResponse faceResponse, String uid, Contact sender) throws IOException {
         /*分割获取图片类型*/

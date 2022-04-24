@@ -45,7 +45,7 @@ public final class BCRMain extends JavaPlugin {
     private BCRMain() {
         super(new JvmPluginDescriptionBuilder(
                 "ao.sh1rocu.mirai.bcr",
-                "1.0")
+                "1.0.1")
                 .name("Sh1roCu-BCR")
                 .author("Sh1roCu")
                 .build());

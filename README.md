@@ -25,7 +25,7 @@
            ...<br>
   * 不需要输入命令执行的功能：<br>
         bilibili：`监听任意UP主的动态并发送到指定群里`<br>
-        BCR：`自动检测boss状态，出刀后自动报刀`<br>
+        BCR：`自动检测boss状态，出刀后自动报刀(注：由于web端API数据更新延迟问题，可能会过慢发送)`<br>
         &emsp;&emsp;&emsp;具体配置看Config<br>
 ***
 * Config：<br>

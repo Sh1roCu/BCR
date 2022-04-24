@@ -47,8 +47,9 @@ public class ClanBattleWatcher extends TimerTask {
                 if (!bot.getGroups().isEmpty()) {
                     for (Group group : bot.getGroups()) {
                         if (getJson(API.get("clan_day_timeline_report"), group) != null) {
-                            if (Objects.requireNonNull(getJson(API.get("clan_day_timeline_report"), group)).get("data").isJsonObject()) {
-                                if (Objects.requireNonNull(getJson(API.get("clan_day_timeline_report"), group)).get("data").getAsJsonObject()
+                            JsonObject check = getJson(API.get("clan_day_timeline_report"), group);
+                            if (Objects.requireNonNull(check).get("data")!=null) {
+                                if (Objects.requireNonNull(check).get("data").getAsJsonObject()
                                         .get("list").isJsonArray()) {
                                     /*获取最新一位成员的出刀信息*/
                                     JsonObject damageInfo = Objects.requireNonNull(getJson(API.get("clan_day_timeline_report"), group)).get("data").getAsJsonObject()

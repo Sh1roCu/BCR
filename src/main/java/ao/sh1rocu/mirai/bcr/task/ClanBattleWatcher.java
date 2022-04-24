@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.contact.Group;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TimerTask;
 
@@ -34,7 +35,7 @@ public class ClanBattleWatcher extends TimerTask {
     /**
      * 暂存出刀信息的时间戳
      */
-    static long damage_time_stamp = 0;
+    static Map<Long, Long> damage_time_stamp = new HashMap<>();
 
     static final Map<String, String> API = ClanBattleInfoSearch.CLAN_BATTLE_API;
 
@@ -51,9 +52,9 @@ public class ClanBattleWatcher extends TimerTask {
                                 JsonObject damageInfo = getJson(API.get("clan_day_timeline_report"), group).get("data").getAsJsonObject()
                                         .get("list").getAsJsonArray().get(0).getAsJsonObject();
                                 long newDamageTimeStamp = damageInfo.get("datetime").getAsLong();
-                                if (damage_time_stamp == 0) {
-                                    damage_time_stamp = newDamageTimeStamp;
-                                } else if (damage_time_stamp < newDamageTimeStamp) {
+                                if (!damage_time_stamp.containsKey(group.getId())) {
+                                    damage_time_stamp.put(group.getId(), newDamageTimeStamp);
+                                } else if (damage_time_stamp.get(group.getId()) < newDamageTimeStamp) {
                                     /*检测到有成员出刀*/
                                     String damageMessage = damageInfo.get("name").getAsString() +
                                             "对[" +
@@ -75,7 +76,7 @@ public class ClanBattleWatcher extends TimerTask {
                                     String bossStatus = ClanBattleInfoSearch.getBossStatus(group);
                                     group.sendMessage(bossStatus);
                                     /*更新时间戳*/
-                                    damage_time_stamp = newDamageTimeStamp;
+                                    damage_time_stamp.put(group.getId(), newDamageTimeStamp);
                                 }
                             }
                         }
@@ -94,6 +95,10 @@ public class ClanBattleWatcher extends TimerTask {
      * @return 返回JsonObject
      */
     private static JsonObject getJson(String api, Group group) {
-        return ClanBattleInfoSearch.parseJson(ClanBattleInfoSearch.getJsonResource(api, group));
+        try {
+            return ClanBattleInfoSearch.parseJson(ClanBattleInfoSearch.getJsonResource(api, group));
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

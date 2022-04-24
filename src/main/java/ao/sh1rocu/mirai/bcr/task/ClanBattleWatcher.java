@@ -48,38 +48,39 @@ public class ClanBattleWatcher extends TimerTask {
                     for (Group group : bot.getGroups()) {
                         if (getJson(API.get("clan_day_timeline_report"), group) != null) {
                             JsonObject check = getJson(API.get("clan_day_timeline_report"), group);
-                            if (Objects.requireNonNull(check).get("data")!=null) {
-                                if (Objects.requireNonNull(check).get("data").getAsJsonObject()
-                                        .get("list").isJsonArray()) {
-                                    /*获取最新一位成员的出刀信息*/
-                                    JsonObject damageInfo = Objects.requireNonNull(getJson(API.get("clan_day_timeline_report"), group)).get("data").getAsJsonObject()
-                                            .get("list").getAsJsonArray().get(0).getAsJsonObject();
-                                    long newDamageTimeStamp = damageInfo.get("datetime").getAsLong();
-                                    if (!damage_time_stamp.containsKey(group.getId())) {
-                                        damage_time_stamp.put(group.getId(), newDamageTimeStamp);
-                                    } else if (damage_time_stamp.get(group.getId()) < newDamageTimeStamp) {
-                                        /*检测到有成员出刀*/
-                                        String damageMessage = damageInfo.get("name").getAsString() +
-                                                "对[" +
-                                                damageInfo.get("lap_num").getAsInt() +
-                                                "周目]" +
-                                                damageInfo.get("boss_name").getAsString() +
-                                                "造成了" +
-                                                damageInfo.get("damage").getAsLong() +
-                                                "点伤害，获得了" +
-                                                damageInfo.get("score").getAsLong() +
-                                                "点分数";
-                                        if (damageInfo.get("reimburse").getAsInt() == 1) {
-                                            damageMessage += "[补偿刀]";
+                            if (Objects.requireNonNull(check).get("data") != null) {
+                                if (Objects.requireNonNull(check).get("data").getAsJsonObject().get("list") != null) {
+                                    if (Objects.requireNonNull(check).get("data").getAsJsonObject().get("list").isJsonArray()) {
+                                        /*获取最新一位成员的出刀信息*/
+                                        JsonObject damageInfo = Objects.requireNonNull(check).get("data").getAsJsonObject()
+                                                .get("list").getAsJsonArray().get(0).getAsJsonObject();
+                                        long newDamageTimeStamp = damageInfo.get("datetime").getAsLong();
+                                        if (!damage_time_stamp.containsKey(group.getId())) {
+                                            damage_time_stamp.put(group.getId(), newDamageTimeStamp);
+                                        } else if (damage_time_stamp.get(group.getId()) < newDamageTimeStamp) {
+                                            /*检测到有成员出刀*/
+                                            String damageMessage = damageInfo.get("name").getAsString() +
+                                                    "对[" +
+                                                    damageInfo.get("lap_num").getAsInt() +
+                                                    "周目]" +
+                                                    damageInfo.get("boss_name").getAsString() +
+                                                    "造成了" +
+                                                    damageInfo.get("damage").getAsLong() +
+                                                    "点伤害，获得了" +
+                                                    damageInfo.get("score").getAsLong() +
+                                                    "点分数";
+                                            if (damageInfo.get("reimburse").getAsInt() == 1) {
+                                                damageMessage += "[补偿刀]";
+                                            }
+                                            if (damageInfo.get("kill").getAsInt() == 1) {
+                                                damageMessage += "并击破";
+                                            }
+                                            group.sendMessage(damageMessage);
+                                            String bossStatus = ClanBattleInfoSearch.getBossStatus(group);
+                                            group.sendMessage(bossStatus);
+                                            /*更新时间戳*/
+                                            damage_time_stamp.put(group.getId(), newDamageTimeStamp);
                                         }
-                                        if (damageInfo.get("kill").getAsInt() == 1) {
-                                            damageMessage += "并击破";
-                                        }
-                                        group.sendMessage(damageMessage);
-                                        String bossStatus = ClanBattleInfoSearch.getBossStatus(group);
-                                        group.sendMessage(bossStatus);
-                                        /*更新时间戳*/
-                                        damage_time_stamp.put(group.getId(), newDamageTimeStamp);
                                     }
                                 }
                             }

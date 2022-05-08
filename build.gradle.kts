@@ -14,7 +14,6 @@ repositories {
     mavenCentral()
 }
 dependencies{
-    implementation("net.mamoe:mirai-console:2.10.1");
     implementation("com.google.code.gson:gson:2.8.6");
     implementation("org.apache.httpcomponents.client5:httpclient5:5.2-alpha1")
 }

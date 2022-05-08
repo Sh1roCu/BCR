@@ -78,24 +78,26 @@ public class DynamicWatcher extends TimerTask {
                             HttpEntity entity = response.getEntity();
                             JsonObject jsonObject = JsonParser.parseString(EntityUtils.toString(entity)).getAsJsonObject();
                             /*获取最新动态*/
-                            JsonObject dynamic = jsonObject.get("data").getAsJsonObject().get("cards").getAsJsonArray().get(0).getAsJsonObject();
-                            long newDynamicTimestamp = dynamic.get("desc").getAsJsonObject().get("timestamp").getAsLong();
-                            if (!dynamic_timestamp.containsKey(uid)) {
-                                dynamic_timestamp.put(uid, newDynamicTimestamp);
-                            } else if (dynamic_timestamp.get(uid) < newDynamicTimestamp) {
-                                /*更新时间戳*/
-                                dynamic_timestamp.put(uid, newDynamicTimestamp);
-                                if (!bot.getGroups().isEmpty()) {
-                                    /*遍历群组*/
-                                    for (Group group : bot.getGroups()) {
-                                        if (dataJson.get(uid).getAsJsonObject().has(String.valueOf(group.getId()))) {
-                                            String permission = dataJson.get(uid).getAsJsonObject().get(String.valueOf(group.getId())).getAsString();
-                                            if ("on".equals(permission)) {
-                                                /*发送动态*/
-                                                try {
-                                                    sendDynamic(group, dynamic);
-                                                } catch (IOException e) {
-                                                    BCRMain.INSTANCE.getLogger().warning("动态发送失败，请检查网络");
+                            if (jsonObject.get("code").getAsInt() == 0) {
+                                JsonObject dynamic = jsonObject.get("data").getAsJsonObject().get("cards").getAsJsonArray().get(0).getAsJsonObject();
+                                long newDynamicTimestamp = dynamic.get("desc").getAsJsonObject().get("timestamp").getAsLong();
+                                if (!dynamic_timestamp.containsKey(uid)) {
+                                    dynamic_timestamp.put(uid, newDynamicTimestamp);
+                                } else if (dynamic_timestamp.get(uid) < newDynamicTimestamp) {
+                                    /*更新时间戳*/
+                                    dynamic_timestamp.put(uid, newDynamicTimestamp);
+                                    if (!bot.getGroups().isEmpty()) {
+                                        /*遍历群组*/
+                                        for (Group group : bot.getGroups()) {
+                                            if (dataJson.get(uid).getAsJsonObject().has(String.valueOf(group.getId()))) {
+                                                String permission = dataJson.get(uid).getAsJsonObject().get(String.valueOf(group.getId())).getAsString();
+                                                if ("on".equals(permission)) {
+                                                    /*发送动态*/
+                                                    try {
+                                                        sendDynamic(group, dynamic);
+                                                    } catch (IOException e) {
+                                                        BCRMain.INSTANCE.getLogger().warning("动态发送失败，请检查网络");
+                                                    }
                                                 }
                                             }
                                         }

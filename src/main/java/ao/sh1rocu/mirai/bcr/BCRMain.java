@@ -66,7 +66,9 @@ public final class BCRMain extends JavaPlugin {
      */
     public void createUPerFaceCacheFile() {
         File file = new File(getDataFolderPath() + "\\UPerFaceCache");
-        if (!file.exists()) file.mkdirs();
+        if (!file.exists()) {
+            file.mkdirs();
+        }
     }
 
     /**
